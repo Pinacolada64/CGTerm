@@ -173,6 +173,12 @@ void select_send_file(FileSelector *fs) {
 }
 
 
+// Added for "Load SEQ" function -- not sure which function to call yet:
+void select_open_seq_file(FileSelector *fs) {
+  xfer_send(fs->selectedfile->name);
+}
+
+
 void ui_metakey(SDL_keysym *keysym) {
   switch (keysym->sym) {
 
@@ -231,9 +237,15 @@ void ui_metakey(SDL_keysym *keysym) {
     break;
 
   case SDLK_l:
+// This is working, original code: draws a dialog box and asks for an input filename
 //  ui_inputcall(30, "Load SEQ file:", "screen.seq", &kbd_loadseq, FOCUS_TERM);
-// TODO: change this to a FileSelector, use code from menu_draw_xfer I guess?
-    kbd_select_file(&kbd_loadseq, FOCUS_REQUESTER); // FOCUS_REQUESTER was FOCUS_TERM
+
+// TODO: change this to a FileSelector, use code from kbd_select_file I guess?
+// function call:
+// void kbd_select_file(void (*donecall)(FileSelector *), Focus focus) { ... }
+
+// kbd_loadseq() opens file, but what reads/displays the file?
+kbd_select_file(&kbd_loadseq(filename), FOCUS_REQUESTER); // FOCUS_REQUESTER was FOCUS_TERM
     break;
 
   case SDLK_q:
