@@ -117,7 +117,12 @@ int menu_init(int width, int height) {
   hilitecolor = SDL_MapRGBA(menu_surface->format, 0xff, 0xff, 0xff, SDL_ALPHA_OPAQUE);
   inputbg = SDL_MapRGBA(menu_surface->format, 0x20, 0x20, 0x20, 0xe0);
   cursorcolor = SDL_MapRGB(menu_surface->format, 0x80, 0x80, 0x00);
-  selectcolor = SDL_MapRGBA(menu_surface->format, 0xd0, 0xd0, 0x20, 0xc0);
+//selectcolor = SDL_MapRGBA(menu_surface->format, 0xd0, 0xd0, 0x20, 0xc0);
+// pina:
+// turn transparency off (0xff) so selected items are easier to read in front of  text.
+// change highlight bar color to black (0x00) so there's more contrast between filename
+// and highlight bar when there is text behind the menu
+  selectcolor = SDL_MapRGBA(menu_surface->format, 0x00, 0x00, 0x00, 0xff);
 
   font_init(menu_surface);
 
@@ -227,6 +232,8 @@ void menu_update_input(char *text, int cursorpos) {
   r.x = 9;
   r.y = 101;
   SDL_FillRect(menu_surface, &r, inputbg);
+//  pina: is this highlight bar?
+//  printf("menu_update_input: bar updating?\n");
   font_set_font(menu_font[0]);
   font_draw_string(10, 102, text);
   menu_dirty = SDL_TRUE;
@@ -425,13 +432,15 @@ void menu_draw_bookmarks(void) {
     if (i < cfg_numbookmarks) {
       menu_print_bookmark(i, cfg_bookmark_alias[i]);
     } else {
-      menu_print_bookmark(i, "");
+      menu_print_bookmark(i, "(Empty)");
     }
   }
   font_set_font(menu_font[1]);
   font_draw_string(115, 10, "Bookmarks");
   font_set_font(menu_font[0]);
-  font_draw_string(50, 166, "Press a key to connect");
+//font_draw_string(50, 166, "Press a key to connect");
+// pina:
+  font_draw_string(30, 166, "0-9: Dial Entry   Esc: Exit");
 }
 
 
