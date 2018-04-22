@@ -46,10 +46,13 @@ SelectMode select_mode;
 
 
 void kbd_select_dir(void (*donecall)(FileSelector *), Focus focus) {
+// void kbd_select_dir(void (*donecall)(FileSelector *), Focus focus, Caption select_caption) {
   select_done_call = donecall;
   select_focus = focus;
   select_mode = SEL_DIR;
+//select_caption = select_caption; // pina added this
   fsel = fs_new("Select disk image", cfg_xferdir);
+//fsel = fs_new(select_caption, cfg_xferdir); // pina added this
   if (fsel) {
     fs_draw(fsel);
     menu_show();
@@ -224,10 +227,13 @@ void ui_metakey(SDL_keysym *keysym) {
 
   case SDLK_i:
     kbd_select_dir(&select_set_xferdir, FOCUS_TERM);
+//  kbd_select_dir(&select_set_xferdir, FOCUS_TERM, "Select disk image:");
     break;
 
   case SDLK_l:
-    ui_inputcall(30, "Load SEQ file:", "screen.seq", &kbd_loadseq, FOCUS_TERM);
+//  ui_inputcall(30, "Load SEQ file:", "screen.seq", &kbd_loadseq, FOCUS_TERM);
+// TODO: change this to a FileSelector, use code from menu_draw_xfer I guess?
+    kbd_select_file(&kbd_loadseq, FOCUS_REQUESTER); // FOCUS_REQUESTER was FOCUS_TERM
     break;
 
   case SDLK_q:
