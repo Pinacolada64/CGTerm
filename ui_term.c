@@ -173,9 +173,10 @@ void select_send_file(FileSelector *fs) {
 }
 
 
-// Added for "Load SEQ" function -- not sure which function to call yet:
-void select_open_seq_file(FileSelector *fs) {
-  xfer_send(fs->selectedfile->name);
+// Added callback for  "Load SEQ" function -- thanks, Mezen!
+void select_seq_file(FileSelector* fsel) {
+  printf("Opening '%s'\n", fsel->selectedfile->name);
+  kbd_loadseq(fsel->selectedfile->name);
 }
 
 
@@ -244,8 +245,8 @@ void ui_metakey(SDL_keysym *keysym) {
 // function call:
 // void kbd_select_file(void (*donecall)(FileSelector *), Focus focus) { ... }
 
-// kbd_loadseq() opens file, but what reads/displays the file?
-kbd_select_file(&kbd_loadseq(filename), FOCUS_REQUESTER); // FOCUS_REQUESTER was FOCUS_TERM
+//  kbd_loadseq() opens file, but what reads/displays the file?
+    kbd_select_file(&select_seq_file, FOCUS_TERM);
     break;
 
   case SDLK_q:
